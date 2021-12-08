@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: datetime
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: datetime
+  template:
+    metadata:
+      labels:
+        app: datetime
+    spec:
+      affinity:
+      # This keeps these pods from being deployed to same node.
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - datetime
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: datetime
+        image: bryan/datetime:1
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          # This makes sure that port really is available with tcp check
+          tcpSocket:
+            port: 8000

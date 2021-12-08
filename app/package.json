@@ -1,0 +1,11 @@
+{
+    "name": "date-and-time",
+    "version": "1",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "author": "Bryan Quigley",
+    "license": "MIT"
+  }
